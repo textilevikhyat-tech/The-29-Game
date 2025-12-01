@@ -1559,3 +1559,38 @@ $(function () {
 		});
 	}, 950);
 });
+// Add fly-in effect to player cards when lobby/dashboard shows
+(function(){
+  function applyFlyIn() {
+    // select the card elements that represent playercards or visible cards on dashboard
+    // adjust selectors to match your markup; common classes: .playercards, .cardcontainer, .centerplay
+    const targets = document.querySelectorAll('.playercards, .cardcontainer, .centerplay');
+
+    // set initial state
+    targets.forEach((el, i) => {
+      el.classList.add('fly-in-init');
+      el.style.opacity = 0;
+    });
+
+    // staggered animation
+    targets.forEach((el, i) => {
+      setTimeout(() => {
+        el.classList.add('fly-in');
+        // after fly-in, give gentle float animation
+        setTimeout(() => {
+          el.classList.add('card-float');
+        }, 1000 + (i * 120));
+      }, 180 + i * 120);
+    });
+  }
+
+  // If you have a specific function that runs when dashboard opens / room is ready,
+  // call applyFlyIn() from there. Otherwise call on initial load:
+  document.addEventListener('DOMContentLoaded', function(){
+    // delay slightly so DOM & assets settle
+    setTimeout(applyFlyIn, 450);
+  });
+
+  // Expose function for manual triggering (optional)
+  window.triggerCardFlyIn = applyFlyIn;
+})();
